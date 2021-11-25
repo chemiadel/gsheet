@@ -15,7 +15,9 @@
         .then((res) => res.json())
         .then((json) => {
             console.log("json", json);
-            location.href = json.dest;
+            // location.href = json.dest;
+            window.location.replace(json.dest);
+
         })
         .catch(err=> console.log(err))
       }

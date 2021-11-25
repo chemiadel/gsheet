@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
+<script type="text/javascript" src="js/tabletop.min.js"></script>
+<script type="text/javascript">
+    function getParameterByName(name, url) {
+        if (!url) {
+          url = window.location.href;
+        }
+        name = name.replace(/[\[\]]/g, "\\$&");
+        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
+            results = regex.exec(url);
+        if (!results) return null;
+        if (!results[2]) return '';
+        return decodeURIComponent(results[2].replace(/\+/g, " "));
+	}
+	sname = getParameterByName('tab');
+	sproduct = getParameterByName('id');
+    var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/11vsMkveegIRDbzwtovLfZmBU43NrkxAEdOlnyAK8AF0/pubhtml';
+    var sheetdata;
+    $(document).ready( function() {
+        Tabletop.init({ key: public_spreadsheet_url,
+                        callback: showInfo,
+                        debug: true,
+                       })
+    });
+    function showInfo(data, tabletop) {
+        var sheet = tabletop.sheets(sname).all();
+        var findobj= sheet.find(x => x.ID === sproduct)
+        window.location.href=findobj.destinationURL;
+    }
+
+</script>
+</head>
+  <body>
+
+  </body>
+</html>

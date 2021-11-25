@@ -1,39 +1,28 @@
-<!DOCTYPE html>
+<!doctype html>
 <html>
-<head>
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.1/jquery.min.js"></script>
-<script type="text/javascript" src="js/tabletop.min.js"></script>
-<script type="text/javascript">
-    function getParameterByName(name, url) {
-        if (!url) {
-          url = window.location.href;
-        }
-        name = name.replace(/[\[\]]/g, "\\$&");
-        var regex = new RegExp("[?&]" + name + "(=([^&#]*)|&|#|$)"),
-            results = regex.exec(url);
-        if (!results) return null;
-        if (!results[2]) return '';
-        return decodeURIComponent(results[2].replace(/\+/g, " "));
-	}
-	sname = getParameterByName('tab');
-	sproduct = getParameterByName('id');
-    var public_spreadsheet_url = 'https://docs.google.com/spreadsheets/d/11vsMkveegIRDbzwtovLfZmBU43NrkxAEdOlnyAK8AF0/pubhtml';
-    var sheetdata;
-    $(document).ready( function() {
-        Tabletop.init({ key: public_spreadsheet_url,
-                        callback: showInfo,
-                        debug: true,
-                       })
-    });
-    function showInfo(data, tabletop) {
-        var sheet = tabletop.sheets(sname).all();
-        var findobj= sheet.find(x => x.ID === sproduct)
-        window.location.href=findobj.destinationURL;
-    }
-
-</script>
-</head>
+  <head>
+    <title>onload test</title>
+    // ES5
+    <script>
+      function load() {
+        const urlSearchParams = new URLSearchParams(window.location.search);
+        const params = Object.fromEntries(urlSearchParams.entries());
+        fetch(
+        `https://script.google.com/macros/s/AKfycbwlSib7xSzBtMbpBSJfztCp4g-EEQJuRU0l9sObhVAtxjIEa5eyEmeb5zrwwlJcFlJQwg/exec?tab=${
+            params?.tab || ""
+        }&id${params?.id || 1}`
+        )
+        .then((res) => res.json())
+        .then((json) => {
+            console.log("json", json);
+            location.href = json.dest;
+        })
+        .catch(err=> console.log(err))
+      }
+      window.onload = load;
+    </script>
+  </head>
   <body>
-
+    <p>The load event fires when the document has finished loading!</p>
   </body>
 </html>
